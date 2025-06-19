@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Strength Tester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 500px;
+      margin: auto;
+      background: #f9f9f9;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    #meter-bar {
+      height: 10px;
+      width: 0%;
+      transition: width 0.3s;
+      margin-bottom: 10px;
+    }
+
+    #strength-text {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Password Strength Tester</h1>
+  <input type="password" id="password" placeholder="Enter your password" oninput="checkStrength(this.value)">
+  <div id="meter-bar"></div>
+  <div id="strength-text">Strength: </div>
+
+  <script>
+    function checkStrength(password) {
+      const strengthText = document.getElementById("strength-text");
+      const meterBar = document.getElementById("meter-bar");
+
+      let score = 0;
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/[a-z]/.test(password)) score++;
+      if (/[0-9]/.test(password)) score++;
+      if (/[^A-Za-z0-9]/.test(password)) score++;
+
+      const levels = ["Very Weak", "Weak", "Fair", "Strong", "Very Strong"];
+      const colors = ["#ff4d4d", "#ff9933", "#ffcc00", "#99cc00", "#33cc33"];
+
+      meterBar.style.width = `${score * 20}%`;
+      meterBar.style.backgroundColor = colors[score - 1] || "#ccc";
+      strengthText.textContent = `Strength: ${levels[score - 1] || "Too Short"}`;
+    }
+  </script>
+</body>
+</html>
